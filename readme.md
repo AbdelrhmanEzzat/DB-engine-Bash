@@ -27,8 +27,3 @@ Hints:
 
 The Bonus:
 - Make the App to accept SQL Code or Use GUI instead of the above menu based 
-
-
-
-
-^_^ added by Abdo 
