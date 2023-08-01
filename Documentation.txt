@@ -1,0 +1,8 @@
+To summarize:
+
+PS1 is the primary prompt string and determines the appearance of the command prompt.
+PS2 is the secondary prompt string and is displayed when a command spans multiple lines.
+PS3 is used in shell scripts and defines the prompt for interactive menus.
+
+
+
