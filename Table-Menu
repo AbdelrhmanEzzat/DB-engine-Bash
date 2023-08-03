@@ -6,31 +6,32 @@ select op in "${options[@]}"
 do
     case $op in
         "Create Table")
-            bash ./createtable.sh
+            #PATH
 
             ;;
         "List Table")
-            bash ./listtable.sh
+             #PATH
+            
 
             ;;
         "Drop Table")
-            bash ./DropTable.sh
+            #PATH
 
             ;;
         "Insert into Table")
-            bash ./insertTable.sh
+            #PATH
 
             ;;
 	    "Select from Table")
-	        bash ./selectTable.sh
+	        #PATH
 
 	    ;;
         "Delete from Table")
-	        bash ./DeleteTable.sh
+	        #PATH
 
 	    ;;
 	    "Update Table")
-            bash ./UpdateTable.sh
+            #PATH
 
 	    ;;
         "Exit")
