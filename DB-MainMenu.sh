@@ -20,14 +20,20 @@ do
 
             ;;
         "List DBs")
+
+            ls Databases
             
             ;;
 
         "Connect to DB")
+
+            . ConnectDB.sh
             
             ;;
 
         "Drop DB")
+
+            . DropDB.sh
            
             ;;
 
