@@ -15,7 +15,7 @@ do
 
         "Create DB")
 
-
+            . CreateDB.sh
 
 
             ;;
