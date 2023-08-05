@@ -34,7 +34,6 @@ do
         "Drop DB")
 
             . DB-Scripts/DropDB.sh
-            cd ..
            
             ;;
 
