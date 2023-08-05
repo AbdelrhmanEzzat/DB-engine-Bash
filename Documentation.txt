@@ -6,3 +6,22 @@ PS3 is used in shell scripts and defines the prompt for interactive menus.
 
 
 
+check_primary_key() {
+    read -p "Enter the primary key value: " pk
+    if [ -z "$pk" ]; then
+        echo "Primary key cannot be empty."
+        return
+    fi
+
+    # Check if the primary key exists in the table file
+    if grep -q "^$pk:" ../Databases/$mydb/$tableName; then #-q stands for "quiet" it prevents any matched lines from being displayed on the terminal. 
+        echo "Primary key already exists."
+    else
+        echo "Primary key is unique." ## True 
+
+    fi
+}
+
+
+
+used to prevent the echo command from adding a newline character at the end of the output. 
