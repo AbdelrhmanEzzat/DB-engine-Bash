@@ -23,18 +23,14 @@ do
         "Connect to DB")
         
             read -p "Enter DB name :" DBname
-            if [ -e "Databases/$DBname" ]; then
-
-                cd ./Databases/$DBname 
-                pwd 
-                echo "Connected to DB successfully"
-
-                . ../../Table-Menu.sh
-                
-            fi          
+         #         
+            . Methods/DB-methods.sh
+            DB_Connection
             ;;
 
         "Main menu")
+
+           #cd ..
            
            . DB-MainMenu.sh
 

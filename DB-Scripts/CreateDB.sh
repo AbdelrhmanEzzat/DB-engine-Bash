@@ -1,9 +1,13 @@
 #!/usr/bin/bash
 
-echo "^_^ Welcome to DB Main Menu ^_^"
+export LC_COLLATE=C
+shopt -s extglob
+
+
+
 PS3='Please select your choise: '
 
-options=("Create DB" "List DBs" "Connect to DB" "Drop DB" "Exit")
+options=("Create DB" "List DBs" "Main menu" "Exit")
 
 
 select op in "${options[@]}"
@@ -15,32 +19,31 @@ do
 
         "Create DB")
 
-            . DB-Scripts/CreateDB.sh
+            read -p "Enter New DataBase Name : " DBname
+
+            #
+            . Methods/DB-methods.sh
+            createDB_Name
 
 
             ;;
         "List DBs")
-
+        
             ls Databases
             
             ;;
 
-        "Connect to DB")
-
-            . DB-Scripts/ConnectDB.sh
-            
-            ;;
-
-        "Drop DB")
-
-            . DB-Scripts/DropDB.sh
-            cd ..
+        "Main menu")
            
+           . DB-MainMenu.sh
+
             ;;
 
             "Exit")
             
+                break
             ;;
+
 
             *)
             echo "Invalid Option "
@@ -48,3 +51,5 @@ do
 
     esac
 done
+
+

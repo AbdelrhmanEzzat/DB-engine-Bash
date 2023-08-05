@@ -1,12 +1,10 @@
 #!/usr/bin/bash
 
-export LC_COLLATE=C
-shopt -s extglob
-
 #Function to check for the input syntax and file is exist or not ;
 
 createDB_Name() {
-   
+   while (true)
+   do
     if [[ $DBname =~ ^[a-zA-Z]+[a-zA-Z0-9]*$ ]]; then 
 
             if [[ -e "Databases/$DBname" ]]; then 
@@ -18,58 +16,30 @@ createDB_Name() {
                 echo " Database Successfully created ^_^ "
                 pwd
             fi
+                break
             
     else  
         echo -e "\n Please Enter A Vaild Name (only letters preferred) "  # -e -->enables the interpretation of backslash escapes
         read -p "Enter DataBase name you want to create : " DBname # -p -->option is used to display a prompt before reading the input.
 
-    fi 
+    fi
+    done 
 
 }
 
-PS3='Please select your choise: '
-
-options=("Create DB" "List DBs" "Main menu" "Exit")
 
 
-select op in "${options[@]}"
+DB_Connection() {
 
+if [ -e "Databases/$DBname" ]; then
 
-do
+                cd  Databases/$DBname 
+                pwd 
+                echo "Connected to DB successfully"
 
-    case $op  in 
-
-        "Create DB")
-
-            read -p "Enter New DataBase Name : " DBname
-
-             createDB_Name
-
-
-            ;;
-        "List DBs")
+                . ../../Table-Scripts/Table-Menu.sh
+                
+            fi          
         
-            ls Databases
-            
-            ;;
 
-        "Main menu")
-           
-           . DB-MainMenu.sh
-
-            ;;
-
-            "Exit")
-            
-                break
-            ;;
-
-
-            *)
-            echo "Invalid Option "
-            ;;
-
-    esac
-done
-
-
+}

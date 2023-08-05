@@ -35,7 +35,7 @@ do
 
 	    ;;
         "Main menu")
-           
+           cd ../.. # change your directory and excute the menu
            . DB-MainMenu.sh
 
             ;;
