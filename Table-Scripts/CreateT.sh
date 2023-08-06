@@ -3,71 +3,42 @@
 export LC_COLLATE=C
 shopt -s extglob
 
+
+    #Call tables methods 
+. ../Methods/Table-methods.sh
+
+#Input
 read -p "what is database name " DBname
-#need to check 
 
- 
-
-namingRegex(){
-    while (true)
-    do
-        if [[ $tableName =~ ^[a-zA-Z]+[a-zA-Z0-9]*$ ]]; then
-            break;
-        else
-            echo -e "\n Please Enter A Vaild Name (only letters preferred) " 
-            read -p "Enter table name you want to create : " tableName
-        fi
-    done
-}
+DB_Check
 
 
-Datatype() {
-        echo " what is the data type of the Column ?"
-        options=("For int choose >> 1" "For string choose >> 2")
 
-    select op in "${options[@]}"
-    do
-    case $op in
-        "For int choose >> 1")
-            echo "int"
-            datatype="int"           
-            echo -n $datatype":" >> ../Databases/$DBname/$tableName-metadata
-            break;
-            ;;
 
-        "For string choose >> 2")
-            echo "string"
-            datatype="string"
-            echo -n $datatype":" >> ../Databases/$DBname/$tableName-metadata
-            break;
-            ;;
-
-        *) echo "invalid option $REPLY please try again";;
-    esac
-    done
-
-}
-pkname(){
-    read -p "enter name of primary key column ?" pk
-    if [ $pk ];then 
-        echo "pk:$pk" >> ../Databases/$DBname/$tableName-metadata
-        Datatype
-        echo -n $pk":" >> ../Databases/$DBname/$tableName
-    else
-        pkname
-    fi
-}
-
+#Input
 read -p "Enter table name you want to create : " tableName
 namingRegex
 
 
+
+
 #need loop
-if [ -f ../Databases/$DBname/$tableName ] ;then
-    echo "Table with name $tableName already exists" 
-else 
-    touch ../Databases/$DBname/$tableName
-    touch ../Databases/$DBname/$tableName-metadata
+while (true) 
+do
+    if [ -f ../Databases/$DBname/$tableName ] ;then
+        echo "Table with name $tableName already exists" 
+        echo -e "\n Please Enter A Vaild Name (only letters preferred) " 
+        read -p "Enter table name you want to create : " tableName
+    else 
+        touch ../Databases/$DBname/$tableName
+        touch ../Databases/$DBname/$tableName-metadata
+        break
+    fi
+done
+
+
+
+
 
 
  while true
@@ -93,7 +64,7 @@ else
         i=($i+1)
 
     done
-fi
+
 
 echo " "
  . Table-Menu.sh

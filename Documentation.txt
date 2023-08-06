@@ -25,3 +25,8 @@ check_primary_key() {
 
 
 used to prevent the echo command from adding a newline character at the end of the output. 
+
+
+
+
+limit input fields 
