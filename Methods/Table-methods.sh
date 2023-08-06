@@ -94,5 +94,22 @@ pkname(){
     fi
 }
 
+PK_exist() {
+
+# Use awk to search for the primary key
+result=$(awk -v pk="$pk" '$0 == pk { found = 1; exit } END { print found }' "../Databases/$DBname/$tableName")
 
 
+while (true)
+    do
+       # Check the result
+if [[ $result -eq 1 ]]; then
+    echo "Primary key exists"
+     echo -e "\n Please Enter another PK " 
+            read -p "Your new PK: " pk
+else
+    echo "Primary key does not exist"
+    break
+fi
+    done
+}

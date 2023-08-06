@@ -16,22 +16,50 @@ read -p "enter table name you want insert into " tableName
     ' Databases/$mydb/$metadata)
 
 
+PK_exist(){
+
+
+    # if awk -F: -v primaryKey="$primaryKey" \
+    #     '{ if ($1==primaryKey) exit 1 }' "Databases/$mydb/$tableName"; then
+    #     echo "Primary key '$primaryKey' does not exist in table '$tableName'."
+    # else
+    #     echo "Primary key '$primaryKey' exists in table '$tableName'."
+    # fi
+
+ if awk -F: -v primaryKey="$primaryKey" \
+        '{ if ($1==primaryKey) { found=1; exit } } END { if (!found) exit 1 }'/Databases/$mydb/$tableName; then
+        echo "Primary key '$primaryKey' does not exist in table 'Databases/$mydb/$tableName'."
+    else
+        echo "Primary key '$primaryKey' exists in table '$tableName'."
+    fi
+}
+
 insertspecefic(){
 
 declare -i i=1
 echo  "" >> ./Databases/$mydb/$tableName
+
+# Insert the PK seperatly 
+read -p "Your new PK: " primaryKey
+
+PK_exist
+
+
+Ncol=$(sed -n '3p' Databases/$mydb/$tableName-metadata ) # N of col entered by user when table creation 
 while (true)
-do
-    if ((  $i != 5-1 ));then
-    
-    s=$(sed -n /name/p Databases/$mydb/$tableName | awk -F: -v i=$i '{print $i}')
+do  #1 4
+
+    if ((  $i != $Ncol ));then
+    #skip the first col = PK 
+    s=$(sed -n '1p' Databases/$mydb/$tableName | awk -F: -v i=$(($i+1)) '{print $i}') # store table header into S
     echo -n "please enter $s = "
     read -p "" input
     
     echo -n $input":" >> ./Databases/$mydb/$tableName
     i=$i+1
     else
-        exit
+        cat Databases/$mydb/$tableName
+        break
     fi
 
 done
@@ -43,9 +71,9 @@ insertRow(){
     echo "insert into $s"
     read -p " " newRow
     echo  "" >> ./Databases/$mydb/$tableName
-    echo -n $newRow":" >> ./Databases/$mydb/$tableName
+     echo -n $newRow":" >> ./Databases/$mydb/$tableName
     }
-
+ 
 selectoption(){
 
         echo " choose the way of insert you wanna use"

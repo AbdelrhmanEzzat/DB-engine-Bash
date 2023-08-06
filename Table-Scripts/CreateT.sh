@@ -46,6 +46,7 @@ done
 
     read -p "Enter number of coloumns : " columnsNum
     if [[ $columnsNum ]] && [[ "$columnsNum" =~ ^[0-9]+$ ]];then
+
         break
     fi
     done
@@ -64,6 +65,9 @@ done
         i=($i+1)
 
     done
+
+    #add num of col in the last of metadata file 
+    echo -e "\n $columnsNum" >> ../Databases/$DBname/$tableName-metadata 
 
 
 echo " "
