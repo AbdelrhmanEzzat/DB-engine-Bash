@@ -43,6 +43,8 @@ echo  "" >> ./Databases/$mydb/$tableName
 read -p "Your new PK: " primaryKey
 
 PK_exist
+# Insert the PK seperatly 
+
 
 
 Ncol=$(sed -n '3p' Databases/$mydb/$tableName-metadata ) # N of col entered by user when table creation 
