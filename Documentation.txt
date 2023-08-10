@@ -30,3 +30,8 @@ used to prevent the echo command from adding a newline character at the end of t
 
 
 limit input fields 
+##################
+
+complete [ insert & update & regex (for all scripts check ) & collect all files as structure ]
+
+finally Testing 
