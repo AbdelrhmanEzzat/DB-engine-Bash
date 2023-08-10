@@ -2,9 +2,9 @@
 
 
 
-PS3='Please select your choise: '
+PS3=$(echo -e "${YELLOW}Please select your choice: ${NC}")
 
-options=( "List DBs" "Connect to DB" "Main menu" "Exit")
+options=( "List DBs" "Connect to DB" "Main menu")
 
 
 select op in "${options[@]}"
@@ -16,14 +16,16 @@ do
 
         "List DBs")
 
+            if [ "$(ls Databases/ )" ]; then
             ls Databases
 
-
+            else echo -e "\e[31mNo Databases to Display\e[0m"
+            . DB-MainMenu.sh
+            fi
             ;;
+            
         "Connect to DB")
         
-            read -p "Enter DB name :" DBname
-         #         
             . Methods/DB-methods.sh
             DB_Connection
             ;;
@@ -36,14 +38,10 @@ do
 
             ;;
 
-            "Exit")
-            
-                break
-            ;;
 
+        *)
 
-            *)
-            echo "Invalid Option "
+            echo "Invalid Option"
             ;;
 
     esac

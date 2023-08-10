@@ -14,7 +14,7 @@ do
 
             ;;
         "Drop Table")
-            read -p "Enter Table Name : " Tablename
+            read -p "Enter Table Name : " Tablename #DB validation 
             if [ -e ../Databases/$DBname/$Tablename ]; then
                     rm ../Databases/$DBname/$Tablename
 		    echo "Table Dropped Successfully"

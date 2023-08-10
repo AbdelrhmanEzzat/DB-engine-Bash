@@ -1,4 +1,6 @@
 #!/bin/bash
+. ../../Methods/Table-methods.sh
+
 echo "Welcome to Table Menu :)"
 PS3='Enter your choice: '
 options=("Create Table" "List Table" "Drop Table" "Insert into Table" "Select from Table" "Delete from Table" "Update Table" "Main menu")
@@ -7,6 +9,7 @@ do
     case $op in
         "Create Table")
             #PATH
+            . ../../Table-Scripts/CreateT.sh
 
             ;;
         "List Table")

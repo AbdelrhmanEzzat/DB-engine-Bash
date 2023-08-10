@@ -5,36 +5,22 @@ shopt -s extglob
 
 
     #Call tables methods 
-. ../Methods/Table-methods.sh
+    . ../../Methods/Table-methods.sh
 
 #Input
-read -p "what is database name " DBname
-
-DB_Check
 
 
 
 
-#Input
-read -p "Enter table name you want to create : " tableName
-namingRegex
 
 
 
+    DB_validation 
+    Table_validation
+       
+        touch ../../Databases/$mydb/$tableName
+        touch ../../Databases/$mydb/$tableName-metadata
 
-#need loop
-while (true) 
-do
-    if [ -f ../Databases/$DBname/$tableName ] ;then
-        echo "Table with name $tableName already exists" 
-        echo -e "\n Please Enter A Vaild Name (only letters preferred) " 
-        read -p "Enter table name you want to create : " tableName
-    else 
-        touch ../Databases/$DBname/$tableName
-        touch ../Databases/$DBname/$tableName-metadata
-        break
-    fi
-done
 
 
 
@@ -61,15 +47,15 @@ done
         ###
         Datatype
 
-        echo -n $columnName":" >> ../Databases/$DBname/$tableName 
+        echo -n $columnName":" >> ../$mydb/$tableName 
         i=($i+1)
 
     done
 
     #add num of col in the last of metadata file 
-    echo -e "\n $columnsNum" >> ../Databases/$DBname/$tableName-metadata 
+    echo -e "\n $columnsNum" >> ../$mydb/$tableName-metadata 
 
 
 echo " "
- . Table-Menu.sh
+ . ../../Table-Scripts/Table-Menu.sh
 

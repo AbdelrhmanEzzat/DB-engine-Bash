@@ -5,9 +5,9 @@ shopt -s extglob
 
 
 
-PS3='Please select your choise: '
+PS3=$(echo -e "${YELLOW}Please select your choice: ${NC}")
 
-options=("Create DB" "List DBs" "Main menu" "Exit")
+options=("Create DB" "List DBs" "Main menu")
 
 
 select op in "${options[@]}"
@@ -19,7 +19,6 @@ do
 
         "Create DB")
 
-            read -p "Enter New DataBase Name : " DBname
 
             #
             . Methods/DB-methods.sh
@@ -27,10 +26,16 @@ do
 
 
             ;;
-        "List DBs")
-        
+       "List DBs")
+
+            if [ "$(ls Databases/ )" ]; then
             ls Databases
+
+            else echo -e "\e[31mNo Databases to Display\e[0m"
             
+            . DB-Scripts/CreateDB.sh
+            
+            fi
             ;;
 
         "Main menu")
@@ -38,12 +43,6 @@ do
            . DB-MainMenu.sh
 
             ;;
-
-            "Exit")
-            
-                break
-            ;;
-
 
             *)
             echo "Invalid Option "

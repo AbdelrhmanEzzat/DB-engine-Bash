@@ -1,5 +1,5 @@
-read -p "what is Database name " DBname
-read -p "Enter table name you want to list : " TableName
+read -p "what is Database name " DBname #DB
+read -p "Enter table name you want to list : " TableName #TableName validation 
 
 
 #DB check 

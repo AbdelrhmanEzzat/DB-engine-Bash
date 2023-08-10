@@ -10,7 +10,7 @@ do
         ##
         if [[ ! -f ../Databases/$DBname/$tableName || -z ../Databases/$DBname/$tableName  ]]; then
             echo "invalid"
-            read -p "Enter a Table you want to Delete: " tableName
+            read -p "Enter a Table you want to Delete: " tableName #validate 
             
         else
 
@@ -19,8 +19,9 @@ do
                   case $op in
                     "Delete Record")
 
-                    read -p "Enter number of column you want to delete " y
+                    read -p "Enter number of Row you want to delete " y # validate 
                     # loop to ignore zero input
+                    #start after the table header
 
                     y=$(($y + 1))
                     x=$(sed -n /$y/p ../Databases/$DBname/$tableName)
