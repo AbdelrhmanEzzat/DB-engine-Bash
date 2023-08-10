@@ -16,39 +16,32 @@ read -p "enter table name you want insert into " tableName
     ' Databases/$mydb/$metadata)
 
 
-
-
 insertspecefic(){
 
-read -p "Your new PK: " primary
-. insertT2.sh
-PK_exist
+    . insertT2.sh
+        PK_exist
 
 declare -i i=1
-echo  "" >> ./Databases/$mydb/$tableName
+#echo  "" >> ./Databases/$mydb/$tableName
 
-
-
-
-Ncol=$(sed -n '3p' Databases/$mydb/$tableName-metadata ) # N of col entered by user when table creation 
+declare Ncol=$(sed -n '3p' Databases/$mydb/$tableName-metadata ) # N of col entered by user when table creation 
 
 while (true)
-do  #1 4
-
-    if [[ $i != $Ncol ]]   ;then
-    #skip the first col = PK 
-    s=$(sed -n '1p' Databases/$mydb/$tableName | awk -F: -v i=$(($i+1)) '{print $i}') # store table header into S
+do
+    if [[ $i != $Ncol ]]; then
+    
+    s=$(sed -n /name/p Databases/$mydb/$tableName | awk -F: -v i=$((i+1)) '{print $i}')
     echo -n "please enter $s = "
     read -p "" input
     
     echo -n $input":" >> ./Databases/$mydb/$tableName
     i=$i+1
     else
-        cat Databases/$mydb/$tableName
         break
     fi
 
 done
+    echo -e "\n"
 }
 
 insertRow(){
@@ -57,9 +50,9 @@ insertRow(){
     echo "insert into $s"
     read -p " " newRow
     echo  "" >> ./Databases/$mydb/$tableName
-     echo -n $newRow":" >> ./Databases/$mydb/$tableName
+    echo -n $newRow":" >> ./Databases/$mydb/$tableName
     }
- 
+
 selectoption(){
 
         echo " choose the way of insert you wanna use"
@@ -110,7 +103,3 @@ fi
 
 echo " "
 bash ./TableMainMenu.sh
-
-# echo $metadata
-
-# cut -d: -f 2 databases/emplyee
