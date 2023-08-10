@@ -17,7 +17,7 @@ elif [ -z "$primary" ]; then
     PK_exist
 
 else
- echo -n -e "\n $primary:" >> Databases/$mydb/$tableName
+ echo -n -e "\n$primary:" >> Databases/$mydb/$tableName
     
    # echo -e "\n$primary:" >> Databases/$mydb/$tableName
 fi

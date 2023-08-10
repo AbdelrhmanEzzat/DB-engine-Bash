@@ -95,31 +95,61 @@ pkname(){
 }
 
 PK_exist(){
+    read -p "Your new PK: " primary
+
+
+pksValues=$(cut -d ":" -f 1 Databases/$mydb/$tableName)
+
+    if echo "$pksValues" | grep -wq "$primary"; then
+
+    echo "Duplicated value, must be unique"
+            PK_exist
+
+elif [ -z "$primary" ]; then
+
+    echo "NOT NULL value"
+    PK_exist
+
+else
+ echo -n -e "\n$primary:" >> Databases/$mydb/$tableName
+    
+   # echo -e "\n$primary:" >> Databases/$mydb/$tableName
+fi
+ 
+
+}
+
+get_row(){
+    declare line 
+
+        # read -p "Your new DB: " mydb
+
+        #  read -p "Your new TN: " tableName
+
+         read -p "Your  PK to get the record : " S_id
 
     fieldNumber=`awk -v RS=':' "/id/"'{print NR}' Databases/$mydb/$tableName`
     pksValues=`sed '1d' Databases/$mydb/$tableName |cut -d ":" -f $fieldNumber `
     re='^[0-9]+$'
     for value in $pksValues
     do
-        if [[ "$primary" == "$value" ]]; then 
-         echo "duplicated value ,must be unique"
-         read -p "Your new PK: " primary
+# Search for the line with the matching ID in the file
 
+        if [[ "$S_id" == "$value" ]]; then 
+            line=$(grep "^$S_id[^0-9]" Databases/$mydb/$tableName)
+            # Check if a matching line was found
+                if [[ -n "$line" ]]; then
+                echo  $line
+                # if line or table empty return table is empty
 
-        elif [ -z "$primary" ]; then
-            echo "NOT NULL value "
-            read -p "Your new PK: " primary
+                break
 
-            
+                else
+                echo "No matching line found for ID: $S_id"
+                get_row
+                fi
 
-
-        else
-            echo -n $primary":" >> ./Databases/$mydb/$tableName
-
-        break
-               
-fi
-done
- 
-
+        fi
+    done
 }
+

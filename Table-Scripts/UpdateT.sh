@@ -8,12 +8,12 @@ read -p "Enter table name you want to updated " tableName
 insertspecefic(){
 
 declare -i i=1
-echo  "" >> ./Databases/$mydb/$tableName
+#echo  "" >> ./Databases/$mydb/$tableName
 
 
-# IGet specific row by enter the PK  
-get_row
-# IGet specific row by enter the PK  
+# Get specific row by enter the PK  
+. TUpdate.sh
+# Get specific row by enter the PK  
 
 
 
@@ -29,12 +29,19 @@ while (true)
 do  
 
     if ((  $i != $Ncol ));then
+
     #skip the first col = PK 
-    s=$(sed -n '1p' Databases/$mydb/$tableName | awk -F: -v i=$(($i+1)) '{print $i}') # store table header into S
-    echo -n "please enter $s = "
-    read -p "" input
+    # we get the line from get_row function and pass it to AWK to split line for updating 
+
+    old_value=$(echo "$line" | awk -F: -v i=$(($i+1)) '{print $i}') # store table header into S
+    echo -n "the current value is : $old_value "
+    read -p "Enter the new value : " new_value
+
+    sed -i "s/$old_value/$new_value/g" "Databases/$mydb/$tableName"
+
+    echo "Value '$old_value' replaced with '$new_value' successfully"
     
-    echo -n $input":" >> ./Databases/$mydb/$tableName
+    #echo -n $input":" >> ./Databases/$mydb/$tableName
     i=$i+1
     else
         cat Databases/$mydb/$tableName
@@ -43,12 +50,11 @@ do
 
 done
 }
-
+insertspecefic
 
 update_row() {
 # change value from old to new 
-read -p "Enter the old value: " old_value
-read -p "Enter the new value: " new_value
+
 
 if [ -f "Databases/$mydb/$tableName" ]; then
 
@@ -64,4 +70,4 @@ update_row
 
 fi 
 }
-update_row
+

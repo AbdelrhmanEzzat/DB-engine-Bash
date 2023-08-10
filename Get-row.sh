@@ -1,9 +1,10 @@
 # sed '1d' user |cut -d ":" -f 1
-declare line 
 get_row(){
-        read -p "Your new DB: " mydb
+    declare line 
 
-         read -p "Your new TN: " tableName
+        # read -p "Your new DB: " mydb
+
+        #  read -p "Your new TN: " tableName
 
          read -p "Your  PK to get the record : " S_id
 
@@ -19,7 +20,7 @@ get_row(){
             # Check if a matching line was found
                 if [[ -n "$line" ]]; then
                 echo  $line
-                                 # if line or table empty return table is empty
+                # if line or table empty return table is empty
 
                 break
 
