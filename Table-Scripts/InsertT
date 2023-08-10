@@ -31,8 +31,17 @@ i++
 
 insertspecefic(){
 
+
+
 declare -i i=1
 echo  "" >> ./databases/$mydb/$tableName
+
+# Insert the PK seperatly 
+read -p "Your new PK: " primary
+PK_exist
+
+
+
 while (true)
 do
     if ((  $i != 5-1 ));then #loop on table
@@ -45,6 +54,6 @@ do
     i=$i+1
         
     fi
-
+    break
 done
 }

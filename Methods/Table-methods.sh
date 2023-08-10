@@ -94,22 +94,32 @@ pkname(){
     fi
 }
 
-PK_exist() {
+PK_exist(){
 
-# Use awk to search for the primary key
-result=$(awk -v pk="$pk" '$0 == pk { found = 1; exit } END { print found }' "../Databases/$DBname/$tableName")
-
-
-while (true)
+    fieldNumber=`awk -v RS=':' "/id/"'{print NR}' Databases/$mydb/$tableName`
+    pksValues=`sed '1d' Databases/$mydb/$tableName |cut -d ":" -f $fieldNumber `
+    re='^[0-9]+$'
+    for value in $pksValues
     do
-       # Check the result
-if [[ $result -eq 1 ]]; then
-    echo "Primary key exists"
-     echo -e "\n Please Enter another PK " 
-            read -p "Your new PK: " pk
-else
-    echo "Primary key does not exist"
-    break
+        if [[ "$primary" == "$value" ]]; then 
+         echo "duplicated value ,must be unique"
+         read -p "Your new PK: " primary
+
+
+        elif [ -z "$primary" ]; then
+            echo "NOT NULL value "
+            read -p "Your new PK: " primary
+
+            
+
+
+        else
+            echo -n $primary":" >> ./Databases/$mydb/$tableName
+
+        break
+               
 fi
-    done
+done
+ 
+
 }
