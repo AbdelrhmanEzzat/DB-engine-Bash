@@ -1,80 +1,94 @@
 #!/usr/bin/bash
-read -p "what is database name " DBname
+. ../../Methods/Table-methods.sh
+
+
+while true 
+do 
+##DB
+read -p "what is database name " mydb
+DB_validation
+if  [[ -d ../../Databases/$mydb ]];then
+echo -e "${BLUE}Already Exist${NC}"
+break
+else 
+echo -e "${RED}DB NOT Exist${NC}"
+fi 
+done
+
+
+while true 
+do
+##Table
 read -p "Enter table name you want to select " tableName
+Table_validation
+ if [[  -f ../../Databases/$mydb/$tableName ]]; then
+        echo -e "${BLUE}Table  Exist${NC}"
+        break
+else 
+        echo -e "${RED}Table  NOT Exist${NC}"
+
+fi
+done
+
+
 
 #must make cd after every function execute
 selectcolumn(){
-    read -p "please enter column you want to select " columnName
-    x=$(sed -n /$columnName/p ../Databases/$DBname/$tableName)
-        if [[ $columnName ]] && [[ $x ]];then
+   read -p "Please enter the column you want to select: " columnName
 
-            echo "select $columnName from $tableName"
-            awk -v columnName=$columnName '
-            BEGIN{FS=":" ; columnName=columnName; y=0}
-            {
-            i=1
-            while(i<=NF){ 
-            if ($i==col)
-            {
-            y=i
-            }
-            i++
-            }
-            print $y
-            }
-            ' ../Databases/$DBname/$tableName
-    
-    else
-        echo "coloumn not found"
-        selectcolumn
-    fi
+fieldNumber=$(awk -F ':' -v columnName="$columnName" 'NR == 1 { for (i=1; i<=NF; i++) if ($i == columnName) { print i; break } }' ../../Databases/$mydb/$tableName)
+
+if [[ -n $fieldNumber ]]; then
+    sed '1d' ../../Databases/$mydb/$tableName | cut -d ':' -f $fieldNumber
+else
+    echo "Column not found."
+fi
+     
 
 }
 
+
+
 selecttable(){
 
-    if [ -f ../Databases/$DBname/$tableName ] ;then
+    #if [ -f ../Databases/$mydb/$tableName ] ;then
     echo "what do you want to select all or column?"
-    options=("if All choose >>> 1" "if column >>> 2")
+    options=("Select All" "Select By Col" "Select By Row" "Main Menu")
     select op in "${options[@]}"
     do
     case $op in
-        "if All choose >>> 1")
-            echo "Select all from $tableName"          
-            cat ../Databases/$DBname/$tableName
+        "Select All")
+            echo "Select all from $tableName"  
+             echo -e "${YELLOW}========================================${NC}"        
+            cat ../../Databases/$mydb/$tableName
+             echo -e "\n${YELLOW}========================================${NC}"
             break;
             ;;
-        "if column >>> 2")
+        "Select By Col")
+        pwd
             selectcolumn
       
             break;
             ;;
+            "Select By Row")
+            get_row
+      
+            break;
+            ;;
+
+            "Main Menu") 
+
+            . ../../Table-Scripts/Table-Menu.sh
+          
+           ;;
         *) 
            echo "invalid option $REPLY try again" 
-           echo "what do you want to select all or column?"
-           echo "if All choose> >>1"
-           echo "if columnchoose >>>2" 
+          
            ;;
     esac
     done
-    else
-        echo "table not exist"
-        read -p "Enter table name you want to select " tableName
-
-            while (true)
-            do
-                if [ -f Databases/$DBname/$tableName ] ;then
-                selecttable
-                break;
-            else
-                echo "table not exist"
-                read -p "Enter table name you want select " tableName
-                fi
-            done
-    fi
+   
 
 }
 
 selecttable
-echo " "
-bash ./Table-Menu.sh

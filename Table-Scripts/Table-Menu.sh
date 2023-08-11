@@ -1,5 +1,5 @@
 #!/bin/bash
-. ../../Methods/Table-methods.sh
+#. /../../Methods/Table-methods.sh
 
 echo "Welcome to Table Menu :)"
 PS3='Enter your choice: '
@@ -13,12 +13,12 @@ do
 
             ;;
         "List Table")
-             #PATH
+             . ../../Table-Scripts/ListT.sh
             
 
             ;;
         "Drop Table")
-            #PATH
+            . ../../Table-Scripts/DropT.sh
 
             ;;
         "Insert into Table")
@@ -26,11 +26,11 @@ do
 
             ;;
 	    "Select from Table")
-	        #PATH
+	        . ../../Table-Scripts/SelectT.sh
 
 	    ;;
         "Delete from Table")
-	        #PATH
+	       . ../../Table-Scripts/DeleteFromT.sh
 
 	    ;;
 	    "Update Table")

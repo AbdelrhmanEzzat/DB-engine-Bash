@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 . Color.sh
-
 #Function to check for the input syntax and file is exist or not ;
 
 createDB_Name() {
@@ -39,20 +38,26 @@ createDB_Name() {
 DB_Connection() {
 
 
-            read -p "Enter DB name :" mydb      
+while true 
+    do 
+    ##DB
+    read -p "what is database name " mydb
+    DB_validation
+            if  [[ -d Databases/$mydb ]];then
+                            echo -e "${BLUE}Already Exist${NC}"
+                            cd  Databases/$mydb 
+                                            pwd 
+                                            echo -e "${BLUE}Connected to DB successfully${NC}"
 
-          DB_validation
+                                            . ../../Table-Scripts/Table-Menu.sh
+                            break
+                else 
+                echo -e "${RED}DB NOT Exist${NC}"
+            fi 
+    done
+         
 
-
-    #  if [[ $mydb =~ ^[a-zA-Z]+[a-zA-Z0-9]*$ ]]; then 
-
-    #         if [[ -e "Databases/$mydb" ]]; then 
-
-                cd  Databases/$mydb 
-                pwd 
-                echo -e "${BLUE}Connected to DB successfully${NC}"
-
-                . ../../Table-Scripts/Table-Menu.sh
+              
 
     #         else
     #            echo -e "${RED}Database NOT exist${NC}"
@@ -112,12 +117,17 @@ elif [[ -z $mydb ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your DataBase : " mydb
 
-elif [[ $mydb == *['!'@#\$%^\&*()_+]* ]];then
+elif [[ $mydb == *['!'@#\$%^\&*()_+\>\<\/]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your DataBase : " mydb
 
-elif [[ $mydb == *[" "]* ]];then
-echo -e "${RED}invalid${NC}"
+
+elif [[ $mydb == *[\.]* || $mydb == [\.] ]];then
+echo -e "${RED}invalid don't use DOT${NC}"
+read -p "Enter Your DataBase : " mydb
+
+elif [[ $mydb == [\/] ]];then
+echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your DataBase : " mydb
 
 elif [[ $mydb == *[" "]* ]];then

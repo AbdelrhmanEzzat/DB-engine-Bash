@@ -75,6 +75,7 @@ Datatype() {
 pkname(){
     read -p "enter name of primary key column ?" pk
     if [ $pk ];then 
+        pk_validation #Validate the input "PK"
         echo "pk:$pk" >> ../$mydb/$tableName-metadata
         Datatype
         echo -n $pk":" >> ../$mydb/$tableName
@@ -85,6 +86,8 @@ pkname(){
 
 PK_exist(){
     read -p "Your new PK: " primary
+
+    primary_validation
 
 
 pksValues=$(cut -d ":" -f 1 ../$mydb/$tableName)
@@ -117,15 +120,15 @@ get_row(){
 
          read -p "Your  PK to get the record : " S_id
 
-    fieldNumber=`awk -v RS=':' "/id/"'{print NR}' ../$mydb/$tableName`
-    pksValues=`sed '1d' ../$mydb/$tableName |cut -d ":" -f $fieldNumber `
+    fieldNumber=`awk -v RS=':' "/id/"'{print NR}' ../Databases/$mydb/$tableName`
+    pksValues=`sed '1d' ../Databases/$mydb/$tableName |cut -d ":" -f $fieldNumber `
     re='^[0-9]+$'
     for value in $pksValues
     do
 # Search for the line with the matching ID in the file
 
         if [[ "$S_id" == "$value" ]]; then 
-            line=$(grep "^$S_id[^0-9]" ../$mydb/$tableName)
+            line=$(grep "^$S_id[^0-9]" ../Databases/$mydb/$tableName)
             # Check if a matching line was found
                 if [[ -n "$line" ]]; then
                 echo  $line
@@ -149,11 +152,11 @@ while true
 do
 # first one need path -- and others for naming 
 
-if  [[ -f ../Databases/$mydb/$tableName ]];then
-echo -e "${RED}Already Exist${NC}"
-read -p "Enter Your table Name : " tableName
+# if  [[ -f ../Databases/$mydb/$tableName ]];then
+# echo -e "${RED}Already Exist${NC}"
+# read -p "Enter Your table Name : " tableName
 
-elif [[ ${tableName:0:1} == [0-9] ]];then 
+if [[ ${tableName:0:1} == [0-9] ]];then 
 echo -e "${RED}Dont Enter the Number${NC}"
 read -p "Enter Your table Name : " tableName
 
@@ -161,12 +164,21 @@ elif [[ -z $tableName ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your table Name : " tableName
 
-elif [[ $tableName == *['!'@#\$%^\&*()_+]* ]];then
+elif [[ $tableName == *['!'@#\$%^\&*()_+\>\<]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your table Name : " tableName
 
-elif [[ $tableName == *[" "]* ]];then
-echo -e "${RED}invalid${NC}"
+
+elif [[ $tableName == *[\.]* ]];then
+echo -e "${RED}invalid don't use DOT${NC}"
+read -p "Enter Your table Name : " tableName
+
+elif [[ $tableName == *[\..]* ]];then
+echo -e "${RED}invalid don't use DOT${NC}"
+read -p "Enter Your table Name : " tableName
+
+elif [[ $tableName == *[\/]* ]];then
+echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your table Name : " tableName
 
 elif [[ $tableName == *[" "]* ]];then
@@ -191,12 +203,12 @@ DB_validation(){
 
 while true
 do
-# first one need path -- and others for naming 
-if  [[ -d ../Databases/$mydb ]];then
-echo -e "${RED}Already Exist${NC}"
-read -p "Enter Your DataBase : " mydb
 
-elif [[ ${mydb:0:1} == [0-9] ]];then 
+# if  [[ -d $mydb ]];then
+# echo -e "${RED}Already Exist${NC}"
+# read -p "Enter Your DataBase : " mydb
+
+if [[ ${mydb:0:1} == [0-9] ]];then 
 echo -e "${RED}Dont Enter the Number${NC}"
 read -p "Enter Your DataBase : " mydb
 
@@ -204,12 +216,17 @@ elif [[ -z $mydb ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your DataBase : " mydb
 
-elif [[ $mydb == *['!'@#\$%^\&*()_+]* ]];then
+elif [[ $mydb == *['!'@#\$%^\&*()_+\>\<\/]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your DataBase : " mydb
 
-elif [[ $mydb == *[" "]* ]];then
-echo -e "${RED}invalid${NC}"
+
+elif [[ $mydb == *[\.]* ]];then
+echo -e "${RED}invalid don't use DOT${NC}"
+read -p "Enter Your DataBase : " mydb
+
+elif [[ $mydb == [\/] ]];then
+echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your DataBase : " mydb
 
 elif [[ $mydb == *[" "]* ]];then
@@ -229,7 +246,7 @@ fi
 done
 }
 
-new_value_validation(){
+new_value_validation(){ #Updating value
 
 while true
 do
@@ -270,7 +287,7 @@ done
 }
 
 
-input_validation(){
+input_validation(){ # input when inserting 
 
 while true
 do
@@ -309,15 +326,15 @@ done
 
 
 
-pk_validation(){
+pk_validation(){ #PKname
 
 while true
 do
 # first one need path -- and others for naming 
 
 
-if [[ ${pk:0:1} == [0-9] ]];then 
-echo -e "${RED}Dont Enter the Number${NC}"
+if [[ ${pk:0:1} == [0] ]];then 
+echo -e "${RED}Dont Enter Zero${NC}"
 read -p "Enter Your pk : " pk
 
 elif [[ -z $pk ]];then
@@ -332,13 +349,129 @@ elif [[ $pk == *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your pk : " pk
 
-elif [[ $pk == *[" "]* ]];then
-echo -e "${RED}invalid${NC}"
-read -p "Enter Your pk : " pk
 
 elif [[ ${#pk} -gt 8 ]];then
 echo -e "${RED}invalid more than 8 ch${NC}"
 read -p "Enter Your pk : " pk
+
+else
+    echo -e "${BLUE}Valids${NC}"
+break
+
+
+fi
+done
+}
+
+primary_validation(){ #PK exist
+
+while true
+do
+# first one need path -- and others for naming 
+
+
+if [[ $primary == ^[a-zA-Z]*$ ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your primary : " primary
+
+elif [[ ${primary:0:1} == [0] ]];then 
+echo -e "${RED}Dont Enter Zero${NC}"
+read -p "Enter Your  primary : " primary
+
+elif [[ -z $primary ]];then
+echo -e "${RED}cant enter an empty name${NC}"
+read -p "Enter Your primary : " primary
+
+elif [[ $primary == *['!'@#\$%^\&*()_+]* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your primary : " primary
+
+elif [[ $primary == *[" "]* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your pprimaryk : " primary
+
+elif [[ ${#primary} -gt 8 ]];then
+echo -e "${RED}invalid more than 8 ch${NC}"
+read -p "Enter Your primary : " primary
+
+else
+    echo -e "${BLUE}Valids${NC}"
+break
+
+
+fi
+done
+}
+
+columnName(){
+
+while true
+do
+# first one need path -- and others for naming 
+
+
+if [[ ${columnName:0:1} == [0-9] ]];then 
+echo -e "${RED}Dont Enter the Number${NC}"
+read -p "Enter Your column Name : " columnName
+
+elif [[ -z $columnName ]];then
+echo -e "${RED}cant enter an empty name${NC}"
+read -p "Enter Your column Name : " columnName
+
+elif [[ $columnName == *['!'@#\$%^\&*()_+]* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your column Name : " columnName
+
+elif [[ $columnName == *[" "]* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your column Name : " columnName
+
+elif [[ ${#columnName} -gt 8 ]];then
+echo -e "${RED}invalid more than 8 ch${NC}"
+read -p "Enter Your column Name : " columnName
+
+
+else
+    echo -e "${BLUE}Valids${NC}"
+break
+
+
+fi
+done
+}
+
+columnsNum(){
+
+while true
+do
+# first one need path -- and others for naming
+if [[ ${columnsNum:0:1} == [0] ]];then 
+echo -e "${RED}Dont Enter Zero${NC}"
+read -p "Enter Your column Num : " columnsNum
+
+
+elif [[ -z $columnsNum ]];then
+echo -e "${RED}cant enter an empty name${NC}"
+read -p "Enter Your column Num : " columnsNum
+
+elif [[ $columnsNum == *['!'@#\$%^\&*()_+]* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your column Num : " columnsNum
+
+elif [[ $columnsNum == *[" "]* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your column Num : " columnsNum
+
+elif [[ $columnsNum =~ ^[a-zA-Z]*$ ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your column Num : " columnsNum
+
+
+elif [[ ${#columnsNum} -gt 8 ]];then
+echo -e "${RED}invalid more than 8 ch${NC}"
+read -p "Enter Your column Num : " columnsNum
+
+
 
 else
     echo -e "${BLUE}Valids${NC}"

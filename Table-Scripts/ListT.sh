@@ -1,43 +1,26 @@
-read -p "what is Database name " DBname #DB
-read -p "Enter table name you want to list : " TableName #TableName validation 
+. ../../Methods/Table-methods.sh
+
+read -p "what is Database name " mydb #DB
+DB_validation
 
 
-#DB check 
-if [ -f ../Databases/$DBname/$tableName ] ;then
-    cat ../Databases/$DBname/$tableName
+if  [[ -d ../../Databases/$mydb ]];then
+echo -e "${BLUE}Already Exist${NC}"
 
+
+read -p "Enter table name you want to list : " tableName #TableName validation 
+Table_validation
+if  [[ -f ../../Databases/$mydb/$tableName ]];then
+        echo -e "${BLUE}Already Exist${NC}"
+        echo -e "${YELLOW}========================================${NC}"
+            cat ../../Databases/$mydb/$tableName
+        echo -e "\n${YELLOW}========================================${NC}"
+        else 
+        echo -e "${RED}Table Not Exist${NC}"
+        fi
 else 
-       echo "Table with name $tableName Not exists try again or exit"
-       options=("For try again choose >> 1" "For exit choose >> 2")
-        select op in "${options[@]}"
-            do
-            case $op in
 
-            "For try again choose >> 1")
-
-            echo "try again"
-            read -p "Enter table name you want to list : " TableName
-            if [ -f Databases/$DBname/$tableName ] ; then
-                cat Databases/$DBname/$tableName
-                break
-            else 
-                echo "Table with name $tableName Not exists please try again or exit"
-                echo "For try again choose >> 1" "For exit choose >> 2"
-            fi
-
-            ;;
-
-            "For exit choose >> 2")
-            echo "exit"
-            
-            break
-            ;;
-            
-        *) 
-        echo "invalid option $REPLY please try again";;
-    esac
-    done 
-
+echo -e "${RED}DB Not Exist${NC}"
 fi
 echo " "
-bash ./TableMainMenu.sh
+bash ../../Table-Scripts/Table-Menu.sh

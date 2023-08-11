@@ -1,11 +1,27 @@
 #!/usr/bin/bash
-echo "Drop Table"
-read -p "Enter Database name " DBname
+. ../../Methods/Table-methods.sh
+
+echo -e "${CYAN}Drop Table${NC}"
+while true
+do
+read -p "Enter Database name " mydb
+DB_validation
+
+if  [[ -d ../../Databases/$mydb ]];then
+echo -e "${BLUE}Already Exist${NC}"
+break
+
+else
+echo -e "${BLUE}DB NOT Exist${NC}"
+fi
+done
+
+
 # DB validation 
 
 PS3='Enter your choice: '
 
-options=("List Tables" "Drop Table" "Table Main Menu"  "Exit")
+options=("List Tables" "Drop Table" "Table Main Menu")
 select op in "${options[@]}"
 do
     case $op in
@@ -14,13 +30,16 @@ do
 
             ;;
         "Drop Table")
-            read -p "Enter Table Name : " Tablename #DB validation 
-            if [ -e ../Databases/$DBname/$Tablename ]; then
-                    rm ../Databases/$DBname/$Tablename
-		    echo "Table Dropped Successfully"
+            read -p "Enter Table Name : " tableName #DB validation 
+            Table_validation
+            if [ -f ../../Databases/$mydb/$tableName ]; then
+                    rm ../../Databases/$mydb/$tableName
+                    rm  ../../Databases/$mydb/$tableName-metadata
+
+		    echo -e "${RED}Table Dropped Successfully${NC}"
 
             else
-                    echo "Table Not Found"
+                    echo -e "${RED}Table Not Found${NC}"
             fi
 
             ;;
@@ -28,10 +47,9 @@ do
             bash ./Table-Menu.sh
 
             ;;
-        "Exit")
-            break
-
-            ;;
-        *) echo "not available option $REPLY";;
+       
+        *) 
+        echo -e "${YELLOW}not available option $REPLY${NC}"
+        ;;
     esac
 done

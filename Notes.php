@@ -35,4 +35,16 @@ create ---> need validation like col-num +col name ....etc
 Drop , delete , list need to basic validation  ------>> validation finished but not applied
 insert & update                                ------>> validation finished but not applied 
 */
+
+
+
+
+/*
+        DB . / done
+        code validation بيتكرر كتير ومحتاجين نجمعة في مكان واحد
+        عن طريق تحديدة ك just validation 
+
+
+        pK need to check from table metadata (name)
+*/
 ?>
