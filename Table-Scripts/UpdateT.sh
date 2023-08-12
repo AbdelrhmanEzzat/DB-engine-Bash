@@ -1,7 +1,44 @@
 #!/bin/bash
 
+#read -p "Enter Database name " mydb
+#sread -p "Enter table name you want to updated " tableName
+while true
+do
 read -p "Enter Database name " mydb
-read -p "Enter table name you want to updated " tableName
+DB_validation
+
+if  [[ -d ../../Databases/$mydb ]];then
+echo -e "${BLUE}Already Exist${NC}"
+break
+
+else
+echo -e "${BLUE}DB NOT Exist${NC}"
+fi
+done
+
+while true 
+do
+##Table
+read -p "Enter table name you want to select " tableName
+Table_validation
+ if [[  -f ../../Databases/$mydb/$tableName ]]; then
+        echo -e "${BLUE}Table  Exist${NC}"
+
+            insertspecefic
+
+        break
+else 
+        echo -e "${RED}Table  NOT Exist${NC}"
+
+fi
+done
+
+
+
+
+
+
+bash ../../Table-Scripts/Table-Menu.sh
 
 
 
@@ -39,7 +76,7 @@ do
 
     sed -i "s/$old_value/$new_value/g" "Databases/$mydb/$tableName"
 
-    echo "Value '$old_value' replaced with '$new_value' successfully"
+    echo -e "${BLUE}Value '$old_value' replaced with '$new_value' successfully${NC}"
     
     #echo -n $input":" >> ./Databases/$mydb/$tableName
     i=$i+1
@@ -60,11 +97,11 @@ if [ -f "Databases/$mydb/$tableName" ]; then
 
 sed -i "s/$old_value/$new_value/g" "Databases/$mydb/$tableName" 
 
-echo "Value '$old_value' replaced with '$new_value' successfully"
+echo -e"${BLUE} Value '$old_value' replaced with '$new_value' successfully${NC} "
 
 else 
 
-echo "File not found!"
+echo -e "${RED}File not found!${NC}"
 
 update_row
 
