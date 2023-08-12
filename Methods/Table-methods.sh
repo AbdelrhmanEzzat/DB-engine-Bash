@@ -599,3 +599,31 @@ break
 fi
 done
 }
+
+
+col_exist_createT(){
+    
+while true 
+do
+
+pksValues=$(sed -n '1s/:/ /gp' ../../Databases/$mydb/$tableName)
+
+    if echo "$pksValues" | grep -wq "$columnName"; then
+
+             echo "Duplicated value"
+             break
+
+
+        elif [ -z "$columnName" ]; then
+
+    echo "Can't be empty"
+    break
+
+else
+ echo -n -e "Column Name Not exist"
+ break
+    
+fi
+done
+}
+

@@ -20,16 +20,21 @@ read -p "Enter Your DataBase : " mydb
     DB_validation #Validation
 
 if  [[ -d ../../Databases/$mydb ]];then
-echo -e "${BLUE}Already Exist${NC}"
+echo -e "${RED}Already Exist${NC}"
+
 read -p "Enter Table name you want to create : " tableName
     Table_validation #Validation
 
-       
-        touch ../../Databases/$mydb/$tableName
+    if [[  -f ../../Databases/$mydb/$tableName ]]; then
+        echo -e "${RED}Table  Exist${NC}"
+        
+        else 
+        echo -e "${BLUE}Table  NOT Exist${NC}"
+         touch ../../Databases/$mydb/$tableName
         touch ../../Databases/$mydb/$tableName-metadata
         break
-    
 
+fi
 
 
 else #true
@@ -65,10 +70,44 @@ done
     pkname #write PK datatype in metadata
 
     declare -i i=2
+
     while (( i < $columnsNum+1 ))
     do
-        read -p "Enter column $i name : " columnName;
-        columnName #Validation
+        
+
+            while true
+            do
+            read -p "Enter column $i name : " columnName;
+
+                columnName #Validation
+
+                #validate col duplicated 
+            pksValues=$(sed -n '1s/:/ /gp' ../../Databases/$mydb/$tableName)
+                colvalues=$(echo "$pksValues" | grep -wq "$columnName")
+                if echo "$pksValues" | grep -wq "$columnName"; then
+
+                        echo "${RED}Duplicated value${NC}"
+                        
+                        
+
+
+                elif [ -z "$columnName" ]; then
+
+                echo "${RED}Can't be empty${NC}"
+                
+
+            else
+            echo  "${BLUE}Column Name Not exist${NC}"
+            break
+    
+fi
+done
+
+
+
+
+
+
 
         ### select datatype for each inputs
         Datatype

@@ -1,27 +1,25 @@
 
 
-PK_exist(){
+col_exist_createT(){
     read -p "Your new PK: " primary
+    
 
-
-pksValues=$(cut -d ":" -f 1 Databases/$mydb/$tableName)
+pksValues=$(sed -n '1s/:/ /gp' ../../Databases/$mydb/$tableName)
 
     if echo "$pksValues" | grep -wq "$primary"; then
 
     echo "Duplicated value, must be unique"
-            PK_exist
+            col_exist_createT
 
 elif [ -z "$primary" ]; then
 
     echo "NOT NULL value"
-    PK_exist
+    col_exist_createT
 
 else
- echo -n -e "\n$primary:" >> Databases/$mydb/$tableName
+ echo -n -e "Column Name Not exist"
     
-   # echo -e "\n$primary:" >> Databases/$mydb/$tableName
 fi
- 
 
 }
 
