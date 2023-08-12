@@ -79,7 +79,7 @@ done
     done
 
     #add num of col in the last of metadata file 
-    echo -e "\n $columnsNum" >> ../$mydb/$tableName-metadata 
+    echo -e "\n$columnsNum" >> ../$mydb/$tableName-metadata 
 
 
 echo " "

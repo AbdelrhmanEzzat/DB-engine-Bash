@@ -35,6 +35,7 @@ done
 #must make cd after every function execute
 selectcolumn(){
    read -p "Please enter the column you want to select: " columnName
+   columnName
 
 fieldNumber=$(awk -F ':' -v columnName="$columnName" 'NR == 1 { for (i=1; i<=NF; i++) if ($i == columnName) { print i; break } }' ../../Databases/$mydb/$tableName)
 
@@ -50,7 +51,6 @@ fi
 
 
 
-    #if [ -f ../Databases/$mydb/$tableName ] ;then
     PS3='Enter your choice: '
     options=("Select All" "Select By Col" "Select By Row" "Main Menu")
 
@@ -62,18 +62,15 @@ fi
              echo -e "${YELLOW}========================================${NC}"        
             cat ../../Databases/$mydb/$tableName
              echo -e "\n${YELLOW}========================================${NC}"
-            break;
             ;;
         "Select By Col")
-        pwd
+        
             selectcolumn
       
-            break;
             ;;
             "Select By Row")
             get_row
       
-            break;
             ;;
 
             "Main Menu") 
