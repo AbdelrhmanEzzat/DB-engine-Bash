@@ -22,9 +22,9 @@ insertspecefic(){
 
 declare -i i=1
 #echo  "" >> ./Databases/$mydb/$tableName
-pwd
+
 declare Ncol=$(sed -n '3p' "../../Databases/$mydb/$tableName-metadata" ) # N of col entered by user when table creation 
-pwd
+
 while (true)
 do
     if [[ $i != $Ncol ]]; then

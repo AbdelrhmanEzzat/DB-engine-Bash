@@ -118,17 +118,17 @@ get_row(){
        
 
            read -p "Your  PK to get the record : " S_id
-           primary_validation # need check 
+           primary_select # need check 
 
     fieldNumber='1'
-    pksValues=`sed '1d' ../../Databases/$mydb/$tableName |cut -d ":" -f $fieldNumber `
+    pksValues=`sed '1d' "../../Databases/$mydb/$tableName" |cut -d ":" -f $fieldNumber `
     re='^[0-9]+$'
     for value in $pksValues
     do
 # Search for the line with the matching ID in the file
 
         if [[ "$S_id" == "$value" ]]; then 
-            line=$(grep "^$S_id[^0-9]" ../../Databases/$mydb/$tableName)
+            line=$(grep "^$S_id[^0-9]" "../../Databases/$mydb/$tableName")
             # Check if a matching line was found
                 if [[ -n "$line" ]]; then
                 echo  $line
@@ -221,15 +221,15 @@ echo -e "${RED}invalid${NC}"
 read -p "Enter Your DataBase : " mydb
 
 
-elif [[ $mydb == *[\.]* ]];then
+elif [[ $mydb =~ *[\.]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your DataBase : " mydb
 
-elif [[ $mydb == [\/] ]];then
+elif [[ $mydb =~ [\/] ]];then
 echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your DataBase : " mydb
 
-elif [[ $mydb == *[" "]* ]];then
+elif [[ $mydb =~ *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your DataBase : " mydb
 
@@ -434,6 +434,59 @@ read -p "Enter Your primary again : " primary
 elif [[ ${#primary} -gt 8 ]];then
 echo -e "${RED}invalid more than 8 ch${NC}"
 read -p "Enter Your primary  again: " primary
+
+else
+    echo -e "${BLUE}Valids${NC}"
+break
+
+
+fi
+done
+}
+
+primary_select(){ #PK select
+
+while true
+do
+# first one need path -- and others for naming 
+
+
+if [[ $S_id == ^[a-zA-Z]*$ ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your primary again : " S_id
+
+elif [[ ${S_id:0:1} == [0] ]];then 
+echo -e "${RED}Dont Enter Zero${NC}"
+read -p "Enter Your  primary again : " S_id
+
+elif [[ -z $S_id ]];then
+echo -e "${RED}cant enter an empty name${NC}"
+read -p "Enter Your primary again : " S_id
+
+elif [[ $S_id == *['!'@#\$%^\&*()_+-]* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your primary again : " S_id
+
+elif [[ $S_id == *[" "]* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your primary again : " S_id
+
+elif [[ $S_id == *[\.]* ]];then
+echo -e "${RED}invalid don't use DOT${NC}"
+read -p "Enter Your primary again : " S_id
+
+elif [[ $S_id == *[\..]* ]];then
+echo -e "${RED}invalid don't use DOT${NC}"
+read -p "Enter Your primary again : " S_id
+
+elif [[ $S_id == *[\/]* ]];then
+echo -e "${RED}invalid don't use Slash ${NC}"
+read -p "Enter Your primary again : " S_id
+
+
+elif [[ ${#S_id} -gt 8 ]];then
+echo -e "${RED}invalid more than 8 ch${NC}"
+read -p "Enter Your primary  again: " S_id
 
 else
     echo -e "${BLUE}Valids${NC}"

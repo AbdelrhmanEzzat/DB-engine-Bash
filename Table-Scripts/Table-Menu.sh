@@ -8,7 +8,7 @@ select op in "${options[@]}"
 do
     case $op in
         "Create Table")
-            #PATH
+            
             . ../../Table-Scripts/CreateT.sh
 
             ;;
@@ -34,7 +34,7 @@ do
 
 	    ;;
 	    "Update Table")
-            #PATH
+           . ../../Table-Scripts/UpdateT.sh
 
 	    ;;
         "Main menu")

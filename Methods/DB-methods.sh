@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 . Color.sh
+#Table-methods.sh
 #Function to check for the input syntax and file is exist or not ;
 
 createDB_Name() {
