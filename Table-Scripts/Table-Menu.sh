@@ -2,7 +2,7 @@
 #. /../../Methods/Table-methods.sh
 
 echo "Welcome to Table Menu :)"
-PS3='Enter your choice: '
+PS3='Enter your choice From Table Main Menu: '
 options=("Create Table" "List Table" "Drop Table" "Insert into Table" "Select from Table" "Delete from Table" "Update Table" "Main menu")
 select op in "${options[@]}"
 do
@@ -22,7 +22,7 @@ do
 
             ;;
         "Insert into Table")
-            #PATH
+            . ../../Table-Scripts/InsertT.sh
 
             ;;
 	    "Select from Table")

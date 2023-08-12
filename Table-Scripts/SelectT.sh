@@ -49,11 +49,11 @@ fi
 
 
 
-selecttable(){
 
     #if [ -f ../Databases/$mydb/$tableName ] ;then
-    echo "what do you want to select all or column?"
+    PS3='Enter your choice: '
     options=("Select All" "Select By Col" "Select By Row" "Main Menu")
+
     select op in "${options[@]}"
     do
     case $op in
@@ -87,8 +87,5 @@ selecttable(){
            ;;
     esac
     done
-   
 
-}
 
-selecttable

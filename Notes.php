@@ -46,5 +46,10 @@ insert & update                                ------>> validation finished but 
 
 
         pK need to check from table metadata (name)
+
+        enter pk to get row mow updated by defult for first col 
+        that mean our first col is PK by defualt 
+
+       !!! when create table don't duplicate new col
 */
 ?>

@@ -8,7 +8,7 @@ get_row(){
 
          read -p "Your  PK to get the record : " S_id
 
-    fieldNumber=`awk -v RS=':' "/id/"'{print NR}' Databases/$mydb/$tableName`
+    fieldNumber='1'
     pksValues=`sed '1d' Databases/$mydb/$tableName |cut -d ":" -f $fieldNumber `
     re='^[0-9]+$'
     for value in $pksValues
