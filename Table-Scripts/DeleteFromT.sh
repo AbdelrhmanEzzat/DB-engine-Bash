@@ -1,4 +1,6 @@
 #!/bin/bash
+. ../../Color.sh
+
 echo "Delete from Table "
 
 
@@ -43,8 +45,8 @@ options=("Delete Record" "Delete all")
                     ;;
 
                     "Delete all")
-                     sed -i '1,$d' ../../Databases/$mydb/$tableName
-                     sed -i '1,$d' ../../Databases/$mydb/$tableName-metadata
+                     sed -i '2,$d' ../../Databases/$mydb/$tableName
+                     #sed -i '1,$d' ../../Databases/$mydb/$tableName-metadata
                         echo -e "${RED}All Table Deleted ${NC}"
                     ;;
 

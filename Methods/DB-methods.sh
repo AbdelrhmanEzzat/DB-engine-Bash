@@ -118,13 +118,17 @@ elif [[ -z $mydb ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your DataBase : " mydb
 
-elif [[ $mydb == *['!'@#\$%^\&*()_+\>\<\/]* ]];then
+elif [[ $mydb == *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your DataBase : " mydb
 
 
 elif [[ $mydb == *[\.]* || $mydb == [\.] ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
+read -p "Enter Your DataBase : " mydb
+
+elif [[ $mydb == *[\']* ]];then
+echo -e "${RED}invalid don't use single qoute ${NC}"
 read -p "Enter Your DataBase : " mydb
 
 elif [[ $mydb == [\/] ]];then

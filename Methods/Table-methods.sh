@@ -1,4 +1,4 @@
-
+. ../../Color.sh
 # Database Name checking FUN
 # DB_Check() {
 #    while (true)
@@ -72,7 +72,7 @@ Datatype() {
     done
 
 }
-pkname(){
+pkname(){ #Name of primary key column
     read -p "Enter Name of primary key column ? preferred word : " pk
     pk_validation   #Validate the input "PK"
     if [ $pk ];then 
@@ -85,7 +85,7 @@ pkname(){
     fi
 }
 
-PK_exist(){
+PK_exist(){ #Check for PK exist or not -- Dublicate ? -- Not null !! ---
     read -p "Your new PK: " primary
 
     primary_validation
@@ -112,13 +112,24 @@ fi
 
 }
 
-get_row(){
+get_row(){ #take pk and get the col by pk 
     declare line 
 
        
 
            read -p "Your  PK to get the record : " S_id
            primary_select # need check 
+
+pksValues=$(cut -d ":" -f 1 ../$mydb/$tableName) #extracts the primary key values
+
+    if echo "$pksValues" | grep -wq "$S_id"; then #used to search for an exact match 
+
+    echo -e "${BLUE}ID Exist${NC}"
+    else
+    echo -e "${RED}ID Not Exist${NC}"
+    get_row
+    fi
+           
 
     fieldNumber='1'
     pksValues=`sed '1d' "../../Databases/$mydb/$tableName" |cut -d ":" -f $fieldNumber `
@@ -130,17 +141,16 @@ get_row(){
         if [[ "$S_id" == "$value" ]]; then 
             line=$(grep "^$S_id[^0-9]" "../../Databases/$mydb/$tableName")
             # Check if a matching line was found
-                if [[ -n "$line" ]]; then
+                if [[ -n "$line" ]]; then # -n >> if a string is not empty
                 echo  $line
                 # if line or table empty return table is empty
 
                 break
 
                 else
-                echo "No matching line found for ID: $S_id"
-                get_row
+                echo -e "${RED}No matching line found for ID: $S_id${NC}"
                 fi
-
+       
         fi
     done
 }
@@ -156,7 +166,7 @@ do
 # echo -e "${RED}Already Exist${NC}"
 # read -p "Enter Your table Name : " tableName
 
-if [[ ${tableName:0:1} == [0-9] ]];then 
+if [[ ${tableName:0:1} =~ [0-9] ]];then 
 echo -e "${RED}Dont Enter the Number${NC}"
 read -p "Enter Your table Name : " tableName
 
@@ -164,24 +174,28 @@ elif [[ -z $tableName ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your table Name : " tableName
 
-elif [[ $tableName == *['!'@#\$%^\&*()_+-\>\<]* ]];then
+elif [[ $tableName =~ *['!'[]{}=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your table Name : " tableName
 
 
-elif [[ $tableName == *[\.]* ]];then
+elif [[ $tableName =~ *[\.]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your table Name : " tableName
 
-elif [[ $tableName == *[\..]* ]];then
+elif [[ $tableName =~ *[\..]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your table Name : " tableName
 
-elif [[ $tableName == *[\/]* ]];then
+elif [[ $mydb =~ *[\']* ]];then
+echo -e "${RED}invalid don't use single qoute ${NC}"
+read -p "Enter Your DataBase : " tableName
+
+elif [[ $tableName =~ *[\/]* ]];then
 echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your table Name : " tableName
 
-elif [[ $tableName == *[" "]* ]];then
+elif [[ $tableName =~ *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your table Name : " tableName
 
@@ -208,7 +222,7 @@ do
 # echo -e "${RED}Already Exist${NC}"
 # read -p "Enter Your DataBase : " mydb
 
-if [[ ${mydb:0:1} == [0-9] ]];then 
+if [[ ${mydb:0:1} =~ [0-9] ]];then 
 echo -e "${RED}Dont Enter the Number${NC}"
 read -p "Enter Your DataBase : " mydb
 
@@ -216,13 +230,17 @@ elif [[ -z $mydb ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your DataBase : " mydb
 
-elif [[ $mydb == *['!'@#\$%^\&*()_+-\>\<\/]* ]];then
+elif [[ $mydb =~ *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your DataBase : " mydb
 
 
 elif [[ $mydb =~ *[\.]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
+read -p "Enter Your DataBase : " mydb
+
+elif [[ $mydb =~ *[\']* ]];then
+echo -e "${RED}invalid don't use single qoute ${NC}"
 read -p "Enter Your DataBase : " mydb
 
 elif [[ $mydb =~ [\/] ]];then
@@ -253,37 +271,22 @@ do
 # first one need path -- and others for naming 
 
 
-if [[ ${new_value:0:1} == [0-9] ]];then 
-echo -e "${RED}Dont Enter the Number${NC}"
-read -p "Enter Your New Value again : " new_value
 
-elif [[ -z $new_value ]];then
+
+if [[ -z $new_value ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your New Value : " new_value
 
-elif [[ $new_value == *['!'@#\$%^\&*()_+-]* ]];then
+elif [[ $new_value =~ *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]*  && ! $new_value =~ ^[0-9]+$ ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your New Value again : " new_value
 
-elif [[ $new_value == *[" "]* ]];then
+elif [[ $new_value =~ *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your New Value again : " new_value
 
-elif [[ $new_value == *[\.]* ]];then
-echo -e "${RED}invalid don't use DOT${NC}"
-read -p "Enter Your New Value again : " new_value
-
-elif [[ $new_value == *[\..]* ]];then
-echo -e "${RED}invalid don't use DOT${NC}"
-read -p "Enter Your New Value again : " new_value
-
-elif [[ $new_value == *[\/]* ]];then
-echo -e "${RED}invalid don't use Slash ${NC}"
-read -p "Enter Your New Value again : " new_value
-
-
-elif [[ ${#new_value} -gt 8 ]];then
-echo -e "${RED}invalid more than 8 ch${NC}"
+elif [[ ${#new_value} -gt 20 ]];then
+echo -e "${RED}invalid more than 20 ch${NC}"
 read -p "Enter Your New Value again : " new_value
 
 else
@@ -308,27 +311,35 @@ if [[ -z $input ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your input again : " input
 
-elif [[ $input == *['!'@#\$%^\&*()_+-]* ]];then
+elif [[ $input =~ *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* && ! $input =~ ^[0-9]+$ ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your input again : " input
 
-elif [[ $input == *[" "]* ]];then
+# elif [[ $input =~ ^[a-zA-Z]*$ ]];then
+# echo -e "${RED}invalid${NC}"
+# read -p "Enter Your input again : " input
+
+elif [[ $input =~ *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your input again : " input
 
-elif [[ $tableName == *[\.]* ]];then
+elif [[ $input =~ *[\']* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your input again : " input
+
+elif [[ $tableName =~ *[\.]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your input again : " input
 
-elif [[ $tableName == *[\..]* ]];then
+elif [[ $tableName =~ *[\..]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your input again : " input
 
-elif [[ $tableName == *[\/]* ]];then
+elif [[ $tableName =~ *[\/]* ]];then
 echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your input again : " input
 
-elif [[ ${#input} -gt 8 ]];then
+elif [[ ${#input} -gt 15 ]];then
 echo -e "${RED}invalid more than 8 ch${NC}"
 read -p "Enter Your input again : " input
 
@@ -350,7 +361,7 @@ do
 # first one need path -- and others for naming 
 
 
-if [[ ${pk:0:1} == [0-9] ]];then 
+if [[ ${pk:0:1} =~ [0-9] ]];then 
 echo -e "${RED}Dont Enter Zero or number ${NC}"
 read -p "Enter Your pk : " pk
 
@@ -358,23 +369,28 @@ elif [[ -z $pk ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your pk again : " pk
 
-elif [[ $pk == *['!'@#\$%^\&*()_+-]* ]];then
+elif [[ $pk =~ *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your pk again : " pk
 
-elif [[ $pk == *[" "]* ]];then
+elif [[ $pk =~ *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your pk again : " pk
 
-elif [[ $pk == *[\.]* ]];then
+elif [[ $pk =~ *[\']* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your pk again : " pk
+
+
+elif [[ $pk =~ *[\.]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your pk again : " pk
 
-elif [[ $pk == *[\..]* ]];then
+elif [[ $pk =~ *[\..]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your pk again : " pk
 
-elif [[ $pk == *[\/]* ]];then
+elif [[ $pk =~ *[\/]* ]];then
 echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your input again : " pk
 
@@ -391,18 +407,18 @@ fi
 done
 }
 
-primary_validation(){ #PK exist
+primary_validation(){ #PK Validation on added onto table 
 
 while true
 do
 # first one need path -- and others for naming 
 
 
-if [[ $primary == ^[a-zA-Z]*$ ]];then
+if [[ $primary =~ ^[a-zA-Z]*$ ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your primary again : " primary
 
-elif [[ ${primary:0:1} == [0] ]];then 
+elif [[ ${primary:0:1} =~ [0] ]];then 
 echo -e "${RED}Dont Enter Zero${NC}"
 read -p "Enter Your  primary again : " primary
 
@@ -410,23 +426,28 @@ elif [[ -z $primary ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your primary again : " primary
 
-elif [[ $primary == *['!'@#\$%^\&*()_+-]* ]];then
+
+elif [[ $primary =~ *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* && ! $primary =~ ^[1-9]+$ ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your primary again : " primary
 
-elif [[ $primary == *[" "]* ]];then
+elif [[ $primary =~ *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your primary again : " primary
 
-elif [[ $primary == *[\.]* ]];then
+elif [[ $primary =~ *[\']* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your primary again : " primary
+
+elif [[ $primary =~ *[\.]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your primary again : " primary
 
-elif [[ $primary == *[\..]* ]];then
+elif [[ $primary =~ *[\..]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your primary again : " primary
 
-elif [[ $primary == *[\/]* ]];then
+elif [[ $primary =~ *[\/]* ]];then
 echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your primary again : " primary
 
@@ -451,11 +472,11 @@ do
 # first one need path -- and others for naming 
 
 
-if [[ $S_id == ^[a-zA-Z]*$ ]];then
+if [[ $S_id =~ ^[a-zA-Z]*$ ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your primary again : " S_id
 
-elif [[ ${S_id:0:1} == [0] ]];then 
+elif [[ ${S_id:0:1} =~ [0] ]];then 
 echo -e "${RED}Dont Enter Zero${NC}"
 read -p "Enter Your  primary again : " S_id
 
@@ -463,23 +484,27 @@ elif [[ -z $S_id ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your primary again : " S_id
 
-elif [[ $S_id == *['!'@#\$%^\&*()_+-]* ]];then
+elif [[ $S_id =~ *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* && ! $S_id =~ ^[1-9]+$ ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your primary again : " S_id
 
-elif [[ $S_id == *[" "]* ]];then
+elif [[ $S_id =~ *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your primary again : " S_id
 
-elif [[ $S_id == *[\.]* ]];then
+elif [[ $S_id =~ *[\']* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your primary again : " S_id
+
+elif [[ $S_id =~ *[\.]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your primary again : " S_id
 
-elif [[ $S_id == *[\..]* ]];then
+elif [[ $S_id =~ *[\..]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your primary again : " S_id
 
-elif [[ $S_id == *[\/]* ]];then
+elif [[ $S_id =~ *[\/]* ]];then
 echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your primary again : " S_id
 
@@ -504,7 +529,7 @@ do
 # first one need path -- and others for naming 
 
 
-if [[ ${columnName:0:1} == [0-9] ]];then 
+if [[ ${columnName:0:1} =~ [0-9] ]];then 
 echo -e "${RED}Dont Enter the Number${NC}"
 read -p "Enter Your column Name again : " columnName
 
@@ -512,23 +537,27 @@ elif [[ -z $columnName ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your column Name again : " columnName
 
-elif [[ $columnName == *['!'@#\$%^\&*()_+-]* ]];then
+elif [[ $columnName =~ *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your column Name again : " columnName
 
-elif [[ $columnName == *[" "]* ]];then
+elif [[ $columnName =~ *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your column Name again : " columnName
 
-elif [[ $columnName == *[\.]* ]];then
+elif [[ $columnName =~ *[\']* ]];then
+echo -e "${RED}invalid${NC}"
+read -p "Enter Your column Name again : " columnName
+
+elif [[ $columnName =~ *[\.]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your column Name again : " columnName
 
-elif [[ $columnName == *[\..]* ]];then
+elif [[ $columnName =~ *[\..]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your column Name again : " columnName
 
-elif [[ $columnName == *[\/]* ]];then
+elif [[ $columnName =~ *[\/]* ]];then
 echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your column Name again : " columnName
 
@@ -546,12 +575,17 @@ fi
 done
 }
 
+
+
+
+
+############################# NUM OF COLs  ###############
 columnsNum(){
 
 while true
 do
 # first one need path -- and others for naming
-if [[ ${columnsNum:0:1} == [0] ]];then 
+if [[ ${columnsNum:0:1} =~ [0] ]];then 
 echo -e "${RED}Dont Enter Zero${NC}"
 read -p "Enter Your column Num : " columnsNum
 
@@ -560,32 +594,37 @@ elif [[ -z $columnsNum ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your column Num : " columnsNum
 
-elif [[ $columnsNum == *['!'@#\$%^\&*()_+-]* ]];then
+elif [[ $columnsNum =~ *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* && ! $columnsNum =~ ^[1-9]+$ ]];then
+echo -e "${RED}invalid SC${NC}"
+read -p "Enter Your column Num : " columnsNum
+
+elif [[ $columnsNum =~ *[" "]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your column Num : " columnsNum
 
-elif [[ $columnsNum == *[" "]* ]];then
-echo -e "${RED}invalid${NC}"
+elif [[ $columnsNum =~ *[\']* ]];then
+echo -e "${RED}invalid single qoute ${NC}"
 read -p "Enter Your column Num : " columnsNum
 
-elif [[ $columnsNum == *[\.]* ]];then
+
+elif [[ $columnsNum =~ *[\.]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your column Num again : " columnsNum
 
-elif [[ $columnsNum == *[\..]* ]];then
+elif [[ $columnsNum =~ *[\..]* ]];then
 echo -e "${RED}invalid don't use DOT${NC}"
 read -p "Enter Your column Num again : " columnsNum
 
-elif [[ $columnsNum == *[\/]* ]];then
+elif [[ $columnsNum =~ *[\/]* ]];then
 echo -e "${RED}invalid don't use Slash ${NC}"
 read -p "Enter Your column Num again : " columnsNum
 
 elif [[ $columnsNum =~ ^[a-zA-Z]*$ ]];then
-echo -e "${RED}invalid${NC}"
+echo -e "${RED}invalid char${NC}"
 read -p "Enter Your column Num : " columnsNum
 
 
-elif [[ ${#columnsNum} -gt 8 ]];then
+elif [[ ${#columnsNum} -gt 2 ]];then
 echo -e "${RED}invalid more than 8 ch${NC}"
 read -p "Enter Your column Num : " columnsNum
 

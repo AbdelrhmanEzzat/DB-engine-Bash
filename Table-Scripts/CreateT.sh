@@ -86,18 +86,18 @@ done
                 colvalues=$(echo "$pksValues" | grep -wq "$columnName")
                 if echo "$pksValues" | grep -wq "$columnName"; then
 
-                        echo "${RED}Duplicated value${NC}"
+                        echo -e "${RED}Duplicated value${NC}"
                         
                         
 
 
                 elif [ -z "$columnName" ]; then
 
-                echo "${RED}Can't be empty${NC}"
+                echo -e "${RED}Can't be empty${NC}"
                 
 
             else
-            echo  "${BLUE}Column Name Not exist${NC}"
+            echo  -e "${BLUE}Column Name Not exist${NC}"
             break
     
 fi

@@ -37,7 +37,12 @@ do
     #skip the first col = PK 
     # we get the line from get_row function and pass it to AWK to split line for updating 
     old_value=$(echo "$line" | awk -F: -v i=$(($i+1)) '{print $i}') # store table header into S
-    echo -n "the current value is : $old_value "
+
+    s=$(sed -n '1p' ../../Databases/$mydb/$tableName | awk -F: -v i=$((i+1)) '{print $i}')
+    # echo -n "please enter $s = "
+
+    # disply the col name when update data 
+    echo -n "the current value in Col $s is : $old_value "
     read -p "Enter the new value : " new_value
     new_value_validation
 
