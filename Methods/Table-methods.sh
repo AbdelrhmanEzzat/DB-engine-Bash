@@ -113,7 +113,7 @@ fi
 }
 
 get_row(){ #take pk and get the col by pk 
-    declare line 
+    #declare line 
 
        
 
