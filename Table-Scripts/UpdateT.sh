@@ -42,11 +42,13 @@ do
     # echo -n "please enter $s = "
 
     # disply the col name when update data 
-    echo -n "the current value in Col $s is : $old_value "
+    echo -n "the current value in Col < $s> is : $old_value "
     read -p "Enter the new value : " new_value
     new_value_validation
 
-    sed -i "s/"$old_value"/"$new_value"/g" "../../Databases/$mydb/$tableName"
+    l_n=$(grep -n "$line" ../../Databases/$mydb/$tableName | cut -d: -f1) #no. of line
+
+     sed -i "s/$old_value/$new_value/" "../../Databases/$mydb/$tableName"
 
     echo -e "${BLUE}Value '$old_value' replaced with '$new_value' successfully${NC}"
     
@@ -89,6 +91,7 @@ elif [ -z "$primary" ]; then
 else
     echo $old_value
     sed -i "s/$(echo "$old_primary")/"$primary"/g" "../../Databases/$mydb/$tableName"
+    
 
     echo -e "${BLUE}Value '$old_primary' replaced with '$primary' successfully${NC}"
     break
