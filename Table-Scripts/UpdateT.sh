@@ -46,9 +46,11 @@ do
     read -p "Enter the new value : " new_value
     new_value_validation
 
-    l_n=$(grep -n "$line" ../../Databases/$mydb/$tableName | cut -d: -f1) #no. of line
+    #l_n=$(grep -n "$line" ../../Databases/$mydb/$tableName | cut -d: -f1) #no. of line
+    line_number=$(awk -F: -v id="$primary" 'NR>1 && $1==id {print FNR}' ../../Databases/$mydb/$tableName)
+    echo $line_number
 
-     sed -i "s/$old_value/$new_value/" "../../Databases/$mydb/$tableName"
+     sed -i "${line_number}s/"$old_value"/"$new_value"/" "../../Databases/$mydb/$tableName"
 
     echo -e "${BLUE}Value '$old_value' replaced with '$new_value' successfully${NC}"
     
@@ -66,11 +68,11 @@ done
 
 
 PK_exist_update(){
-declare line=$(grep "^$S_id[^0-9]" "../../Databases/$mydb/$tableName")
+declare line_pk_exist=$(grep "^$S_id[^0-9]" "../../Databases/$mydb/$tableName")
 
 
 
-    old_primary=$(echo "$line" | cut -d: -f1 ) # get the first col in line 
+    old_primary=$(echo "$line_pk_exist" | cut -d: -f1 ) # get the first col in line 
 while true
 do
     read -p "Your new PK: " primary
@@ -90,8 +92,8 @@ elif [ -z "$primary" ]; then
 
 else
     echo $old_value
-    sed -i "s/$(echo "$old_primary")/"$primary"/g" "../../Databases/$mydb/$tableName"
-    
+    sed -i "s/^$(echo "$old_primary")/"$primary"/g" "../../Databases/$mydb/$tableName"
+        ####^ to avoid edit all 3 in file just the first 3 
 
     echo -e "${BLUE}Value '$old_primary' replaced with '$primary' successfully${NC}"
     break
