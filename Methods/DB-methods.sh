@@ -8,20 +8,20 @@ createDB_Name() {
    read -p "Enter DB name :" mydb  
     DB_validation
 
-    # if [[ $mydb =~ ^[a-zA-Z]+[a-zA-Z0-9]*$ ]]; then 
+    
 
-    #         if [[ -e "Databases/$mydb" ]]; then 
+            if [[ -e "Databases/$mydb" ]]; then 
 
-    #             echo -e "${RED}Database already exist${NC}"
-    #             createDB_Name
+                echo -e "${RED}Database already exist${NC}"
+                createDB_Name
 
-       #     else
+           else
                 mkdir "Databases/$mydb"
                 echo -e "${BLUE} Database Successfully created ^_^ ${NC}"
                 . DB-Scripts/ConnectDB.sh
 
                 
-          #  fi
+           fi
             
                 
             

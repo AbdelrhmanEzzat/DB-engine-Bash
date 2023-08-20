@@ -2,17 +2,7 @@
 . ../../Methods/Table-methods.sh
 
  metadata="$tableName-metadata"
- declare -i NF=0
-    pk_meta=$(awk 'BEGIN{FS=":"}
-    {
-    i=1
-    while(i<=NF){ 
-    if ($i=="pk"){
-    print $((i+1))}
-    i++
-    }
-    }
-    ' ./Databases/$mydb/$metadata)
+ 
 #searches for the field "pk" in the metadata file and prints the value of the next field. 
 
 
