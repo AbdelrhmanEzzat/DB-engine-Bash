@@ -34,43 +34,6 @@ do
 done
 }
 
-# insertRow(){
-#     echo "please enter you data in order as follows and make sure that primary key is a unique value your primary key is $pk"
-#     s=$(sed -n /name/p Databases/$mydb/$tableName)
-#     echo "insert into $s"
-#     read -p " " newRow
-#     echo  "" >> ./Databases/$mydb/$tableName
-#     echo -n $newRow":" >> ./Databases/$mydb/$tableName
-#     }
-
-# selectoption(){
-
-#         echo " choose the way of insert you wanna use"
-#     options=("insert by row" "insert one by one")
-#     select opt in "${options[@]}"
-#     do
-#     case $opt in
-#         "insert by row")
-#             echo "NOTE : BE CAREFUL INSERT ROW MUST BE IN SAME ORDER AS FOLLOWS OR YOU LOSE DATA CONSISTNSY"          
-#             insertRow
-#             echo " "
-#             bash ./TableMainMenu.sh
-#             ;;
-#         "insert one by one")
-#             insertspecefic
-#             echo " 1) Create Table       3) Drop Table         5) Select from Table  7) Update Table
-#                    2) List Table         4) Insert into Table  6) Delete from Table  8) Exit"
-#             bash ./TableMainMenu.sh
-#             ;;
-#         *) echo "invalid option $REPLY please try again" 
-#            echo "choose the way of insert you wanna use"
-#            echo "insert by row "
-#            echo "insert one by one" ;;
-#     esac
-#     done
-
-#     }
-
 
 while true
 do

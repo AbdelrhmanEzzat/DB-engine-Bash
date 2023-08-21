@@ -1,11 +1,10 @@
 #!/usr/bin/bash
 . Color.sh
-#Table-methods.sh
 #Function to check for the input syntax and file is exist or not ;
 
 createDB_Name() {
 
-   read -p "Enter DB name :" mydb  
+   read -p "Enter DB name :" mydb  #display a prompt message to the user before reading input
     DB_validation
 
     
@@ -23,13 +22,6 @@ createDB_Name() {
                 
            fi
             
-                
-            
-    # else  
-    #     echo -e "${RED}\n Please Enter A Vaild Name (only letters preferred)${NC}"  # -e -->enables the interpretation of backslash escapes
-    #     #read -p "Enter DataBase name you want to create : " DBname # -p -->option is used to display a prompt before reading the input.
-    #             createDB_Name
-    # fi
      
 
 }
@@ -60,46 +52,25 @@ while true
 
               
 
-    #         else
-    #            echo -e "${RED}Database NOT exist${NC}"
-    #                 DB_Connection
-                
-    #         fi
-            
-                
-            
-    # else  
-    #     echo -e "${RED}\n Please Enter A Vaild Name (only letters preferred)${NC}"  # -e -->enables the interpretation of backslash escapes
-    #     #read -p "Enter DataBase name you want to create : " DBname # -p -->option is used to display a prompt before reading the input.
-    #             DB_Connection
-    # fi
-
 }
 
 DropDB() {
 read -p "Enter the DataBase you want To Remove : " mydb
 DB_validation
 
-# if [[ $mydb =~ ^[a-zA-Z]+[a-zA-Z0-9]*$ ]]; then
 
-#         if [[ -e "Databases/$mydb" ]]; then
+        if [[ -e "Databases/$mydb" ]]; then
 
-        rm -r Databases/$mydb
+        rm -r "Databases/$mydb"
         echo -e "${BLUE}Removed Successfully${NC}"
-        #cd ..
             
-#         else 
-#             echo -e "${RED}No DataBase${NC}"
-#             DropDB
-#         fi
-# else
-#  echo -e "${RED}\n Please Enter A Vaild Name (only letters preferred)${NC}"  # -e -->enables the interpretation of backslash escapes
-#         #read -p "Enter DataBase name you want to create : " DBname # -p -->option is used to display a prompt before reading the input.
-#                 DropDB
-
-
-# fi
+        else 
+             echo -e "${RED}No DataBase${NC}"
+                DropDB
+        fi
 }
+
+
 
 DB_validation(){
 

@@ -30,7 +30,7 @@ read -p "Enter Table name you want to create : " tableName
         
         else 
         echo -e "${BLUE}Table  NOT Exist${NC}"
-         touch ../../Databases/$mydb/$tableName
+        touch ../../Databases/$mydb/$tableName
         touch ../../Databases/$mydb/$tableName-metadata
         break
 
@@ -69,9 +69,13 @@ done
     ###
     pkname #write PK datatype in metadata
 
+
+    #i = 2 to start after PK 
+
+
     declare -i i=2
 
-    while (( i < $columnsNum+1 ))
+    while (( i < $columnsNum+1 )) #check iteration = columnsNum
     do
         
 
@@ -82,7 +86,7 @@ done
                 columnName #Validation
 
                 #validate col duplicated 
-            pksValues=$(sed -n '1s/:/ /gp' ../../Databases/$mydb/$tableName)
+            pksValues=$(sed -n '1s/:/ /gp' ../../Databases/$mydb/$tableName) #output >> id name add
                 colvalues=$(echo "$pksValues" | grep -wq "$columnName")
                 if echo "$pksValues" | grep -wq "$columnName"; then
 
@@ -102,10 +106,6 @@ done
     
 fi
 done
-
-
-
-
 
 
 

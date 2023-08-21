@@ -1,50 +1,4 @@
 . ../../Color.sh
-# Database Name checking FUN
-# DB_Check() {
-#    while (true)
-#    do
-
-#             if [ -e ../Databases/$DBname ]; then 
-#                 echo " Database Successfully exist ^_^ "
-#                 break
-               
-#             else
-
-#                  echo "Database already exists"
-#                 echo -e "\n Please Enter A Vaild Name (only letters preferred) "  # -e -->enables the interpretation of backslash escapes
-#                 read -p "Enter DataBase name you want to create : " DBname # -p -->option is used to display a prompt before reading the input.
-
-                
-              
-       
-#     fi
-#     done 
-
-# }
-
-# Table_Check() {
-#    while (true)
-#    do
-
-#             if [ -f ../Databases/$DBname/$tableName ]; then 
-#                 echo "Successfully exist ^_^ "
-#                 break
-               
-#             else
-
-#                  echo "Database File already exists"
-#                 echo -e "\n Please Enter A Vaild Name (only letters preferred) "  # -e -->enables the interpretation of backslash escapes
-#                 read -p "Enter DataBase name you want to create : " tableName # -p -->option is used to display a prompt before reading the input.
-
-                
-              
-       
-#     fi
-#     done 
-
-# }
-
-
 
 Datatype() {
         echo " what is the data type of the Column ?"
@@ -72,6 +26,7 @@ Datatype() {
     done
 
 }
+
 pkname(){ #Name of primary key column
     read -p "Enter Name of primary key column ? preferred word : " pk
     pk_validation   #Validate the input "PK"
@@ -80,6 +35,7 @@ pkname(){ #Name of primary key column
         echo "pk:$pk" >> ../$mydb/$tableName-metadata
         Datatype
         echo -n $pk":" >> ../$mydb/$tableName
+        # write 3 things in table files [PK:$PK - pk:type]  - PK:name
     else
         pkname
     fi
@@ -104,15 +60,14 @@ elif [ -z "$primary" ]; then
     PK_exist
 
 else
- echo -n -e "\n$primary:" >> ../$mydb/$tableName
+ echo -e "\n$primary:" >> ../$mydb/$tableName
     
-   # echo -e "\n$primary:" >> Databases/$mydb/$tableName
 fi
  
 
 }
 
-get_row(){ #take pk and get the col by pk 
+get_row(){ #take pk and get the row by pk 
     #declare line 
 
        
@@ -133,7 +88,6 @@ pksValues=$(cut -d ":" -f 1 ../$mydb/$tableName) #extracts the primary key value
 
     fieldNumber='1'
     pksValues=`sed '1d' "../../Databases/$mydb/$tableName" |cut -d ":" -f $fieldNumber `
-    re='^[0-9]+$'
     for value in $pksValues
     do
 # Search for the line with the matching ID in the file
@@ -639,7 +593,7 @@ fi
 done
 }
 
-
+#will be deleted 
 col_exist_createT(){
     
 while true 
@@ -659,7 +613,7 @@ pksValues=$(sed -n '1s/:/ /gp' ../../Databases/$mydb/$tableName)
     break
 
 else
- echo -n -e "Column Name Not exist"
+ echo -n  "Column Name Not exist"
  break
     
 fi
