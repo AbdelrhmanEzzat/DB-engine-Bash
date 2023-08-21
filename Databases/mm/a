@@ -1,0 +1,21 @@
+id:name:add:
+3:nasdsdsdsde:add:
+5:name111111:ssss:
+1
+
+
+get record or row by PK --
+--------------------
+FV > PK >>> pk exist(not null - duplicate ) - validation
+change PK 
+-----------------------
+loop {
+
+    cut record /row (after PK)
+    add new value 
+    ** sensetive for other fields  
+}
+
+y=2
+x=5:name111111:ssss:
+

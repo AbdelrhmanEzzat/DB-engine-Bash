@@ -5,8 +5,8 @@
 
 
 
-update_specefic(){
-declare line=$(grep "^$S_id[^0-9]" "../../Databases/$mydb/$tableName")
+update_specefic(){                      #select just the given PK 
+declare line=$(grep "^$S_id[^0-9]" "../../Databases/$mydb/$tableName") # to avoid when select 1 from getting 11 or 12 or 13 ...etc
 declare -i i=1
 #echo  "" >> ./Databases/$mydb/$tableName
 
@@ -46,7 +46,8 @@ do
     read -p "Enter the new value : " new_value
     new_value_validation
 
-    #l_n=$(grep -n "$line" ../../Databases/$mydb/$tableName | cut -d: -f1) #no. of line
+    #validation for editing just the selected line without change any field with the same value 
+    
     line_number=$(awk -F: -v id="$primary" 'NR>1 && $1==id {print FNR}' ../../Databases/$mydb/$tableName)
     echo $line_number
 
@@ -54,7 +55,6 @@ do
 
     echo -e "${BLUE}Value '$old_value' replaced with '$new_value' successfully${NC}"
     
-    #echo -n $input":" >> ./Databases/$mydb/$tableName
     i=$i+1
     else
         cat ../../Databases/$mydb/$tableName
@@ -91,7 +91,7 @@ elif [ -z "$primary" ]; then
     
 
 else
-    echo $old_value
+  
     sed -i "s/^$(echo "$old_primary")/"$primary"/g" "../../Databases/$mydb/$tableName"
         ####^ to avoid edit all 3 in file just the first 3 
 

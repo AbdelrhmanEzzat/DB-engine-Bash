@@ -31,7 +31,7 @@ options=("Delete Record" "Delete all")
                     # loop to ignore zero input
                     #start after the table header
 
-                    y=$(($y + 1))
+                    y=$(($y + 1)) # 
                     x=$(sed -n /$y/p ../../Databases/$mydb/$tableName)
 
                     #
