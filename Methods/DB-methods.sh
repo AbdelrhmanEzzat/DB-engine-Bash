@@ -93,6 +93,10 @@ elif [[ $mydb == *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* ]];then
 echo -e "${RED}invalid${NC}"
 read -p "Enter Your DataBase : " mydb
 
+elif [[ $mydb =~ [\{\}] || $mydb =~ [\[\]] ]];then
+echo -e "${RED}invalid { } [ ]${NC}"
+read -p "Enter Your DataBase : " mydb
+
 
 elif [[ $mydb == *[\.]* || $mydb == [\.] ]];then
 echo -e "${RED}invalid don't use DOT${NC}"

@@ -39,7 +39,7 @@ selectcolumn(){
 
 fieldNumber=$(awk -F ':' -v columnName="$columnName" 'NR == 1 { for (i=1; i<=NF; i++) if ($i == columnName) { print i; break } }' ../../Databases/$mydb/$tableName)
 
-if [[ -n $fieldNumber ]]; then
+if [[ -n $fieldNumber ]]; then # if number
     sed '1d' ../../Databases/$mydb/$tableName | cut -d ':' -f $fieldNumber
 else
     echo "Column not found."

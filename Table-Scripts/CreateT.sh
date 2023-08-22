@@ -67,7 +67,7 @@ done
     done
 
     ###
-    pkname #write PK datatype in metadata
+    pkname #write PK datatype in metadata/ and name  in table file
 
 
     #i = 2 to start after PK 

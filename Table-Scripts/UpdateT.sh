@@ -32,7 +32,7 @@ PK_exist_update # this function tottaly ckeck the PK and update to new one
 while (true)
 do  
 
-    if [[  $i != $Ncol ]];then
+    if [[  $i != $Ncol ]];then # IF I = Ncol >> TABLR FILLED
 
     #skip the first col = PK 
     # we get the line from get_row function and pass it to AWK to split line for updating 

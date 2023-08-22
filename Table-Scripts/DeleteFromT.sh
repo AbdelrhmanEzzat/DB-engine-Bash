@@ -20,7 +20,7 @@ do
 done
 
 PS3='Please enter your choice: '
-options=("Delete Record" "Delete all")
+options=("Delete Record" "Delete all" "Main menu ")
 
                select op in "${options[@]}"
                do
@@ -48,6 +48,10 @@ options=("Delete Record" "Delete all")
                      sed -i '2,$d' ../../Databases/$mydb/$tableName
                      #sed -i '1,$d' ../../Databases/$mydb/$tableName-metadata
                         echo -e "${RED}All Table Deleted ${NC}"
+                    ;;
+
+                     "Main menu ")
+                        . ../../Table-Scripts/Table-Menu.sh
                     ;;
 
                     *)

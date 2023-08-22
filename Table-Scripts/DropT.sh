@@ -44,7 +44,8 @@ do
 
             ;;
         "Table Main Menu")
-            bash ./Table-Menu.sh
+
+              . ../../Table-Scripts/Table-Menu.sh
 
             ;;
        
