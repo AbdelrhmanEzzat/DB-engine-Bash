@@ -582,7 +582,7 @@ elif [[ -z $columnsNum ]];then
 echo -e "${RED}cant enter an empty name${NC}"
 read -p "Enter Your column Num : " columnsNum
 
-elif [[ $columnsNum =~ *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* && ! $columnsNum == ^[1-9]+$ ]];then
+elif [[ $columnsNum == *['!'=?@#\$%^\&*()_+-\;\"\`\>\<\/\|\~]* && ! $columnsNum =~ ^[1-9]+$ ]];then
 echo -e "${RED}invalid SC${NC}"
 read -p "Enter Your column Num : " columnsNum
 
