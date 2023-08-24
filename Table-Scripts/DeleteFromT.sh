@@ -1,5 +1,6 @@
 #!/bin/bash
 . ../../Color.sh
+. ../../Methods/Table-methods.sh
 
 echo "Delete from Table "
 
